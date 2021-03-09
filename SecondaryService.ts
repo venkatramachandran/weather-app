@@ -1,9 +1,12 @@
 import Weather from "./Weather";
 import fetch from 'node-fetch';
 import ApiError from './ApiError';
+import "reflect-metadata";
+import {inject, injectable} from "tsyringe";
 
+@injectable()
 export default class SecondaryService {
-    constructor(private url: string, private apiKey: string) {}
+    constructor(@inject("secondary_api_url") private url: string, @inject("secondary_api_url") private apiKey: string) {}
 
     public async getWeather(city: string): Promise<Weather> {
         const apiUrl = `${this.url}?appid=${this.apiKey}&q=${city}&units=metric&language=en`;

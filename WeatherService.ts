@@ -2,7 +2,10 @@ import CacheService from "./CacheService";
 import PrimaryService from "./PrimaryService";
 import SecondaryService from "./SecondaryService";
 import Weather from "./Weather";
+import "reflect-metadata";
+import {injectable} from "tsyringe";
 
+@injectable()
 export default class WeatherService {
     constructor(private p: PrimaryService, private s: SecondaryService, private c: CacheService) {}
     public async getWeather(city: string): Promise<Weather> {
