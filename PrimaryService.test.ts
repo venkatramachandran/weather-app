@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { mocked } from 'ts-jest/utils';
+import Logger from './Logger';
 import PrimaryService from './PrimaryService';
 
 jest.mock('node-fetch', () => {
@@ -9,7 +10,7 @@ jest.mock('node-fetch', () => {
 describe('PrimaryService', () => {
     let p: PrimaryService;
     beforeEach(() => {
-        p = new PrimaryService('http://primary.host', 'apiKey');
+        p = new PrimaryService('http://primary.host', 'apiKey', new Logger('test', 60));
         mocked(fetch).mockClear();
     })
     it('returns data when api invocation is successful', async () => {
@@ -17,7 +18,6 @@ describe('PrimaryService', () => {
             return Promise.resolve({
               json() {
                 return Promise.resolve({
-                    success: true,
                     current: {
                         temperature: -1,
                         wind_speed: -1
@@ -27,7 +27,7 @@ describe('PrimaryService', () => {
             });
           });
         const w = await p.getWeather('Test');
-        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m&language=en');
+        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m');
         expect(w).toStrictEqual({
             temperature_degrees: -1,
             wind_speed: -1
@@ -39,7 +39,7 @@ describe('PrimaryService', () => {
         });
 
         expect(() => p.getWeather('Test')).rejects.toThrowError('Simple');
-        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m&language=en');
+        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m');
     });
     it('throws when api invocation is successful, but the server returns error status', async () => {
         mocked(fetch).mockImplementation((): Promise<any> => {
@@ -55,7 +55,7 @@ describe('PrimaryService', () => {
             });
           });
         expect(() => p.getWeather('Test')).rejects.toThrowError('Wrong Api Key');
-        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m&language=en');
+        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://primary.host?access_key=apiKey&query=Test&units=m');
     });
 });
 

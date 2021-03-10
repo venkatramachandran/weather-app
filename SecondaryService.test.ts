@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { mocked } from 'ts-jest/utils';
+import Logger from './Logger';
 import SecondaryService from './SecondaryService';
 
 jest.mock('node-fetch', () => {
@@ -9,7 +10,7 @@ jest.mock('node-fetch', () => {
 describe('SecondaryService', () => {
     let s: SecondaryService;
     beforeEach(() => {
-        s = new SecondaryService('http://secondary.host', 'apiKey');
+        s = new SecondaryService('http://secondary.host', 'apiKey', new Logger('test', 60));
         mocked(fetch).mockClear();
     })
     it('returns data when api invocation is successful', async () => {
@@ -28,7 +29,7 @@ describe('SecondaryService', () => {
             });
           });
         const w = await s.getWeather('Test');
-        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://secondary.host?appid=apiKey&q=Test&units=metric&language=en');
+        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://secondary.host?appid=apiKey&q=Test&units=metric');
         expect(w).toStrictEqual({
             temperature_degrees: -1,
             wind_speed: -3.6
@@ -40,6 +41,6 @@ describe('SecondaryService', () => {
         });
 
         expect(() => s.getWeather('Test')).rejects.toThrowError('Simple');
-        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://secondary.host?appid=apiKey&q=Test&units=metric&language=en');
+        expect(mocked(fetch).mock.calls[0]?.[0]).toBe('http://secondary.host?appid=apiKey&q=Test&units=metric');
     });
 });

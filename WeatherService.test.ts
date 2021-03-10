@@ -1,4 +1,5 @@
 import CacheService from "./CacheService";
+import Logger from "./Logger";
 import PrimaryService from "./PrimaryService";
 import SecondaryService from "./SecondaryService";
 import Weather from "./Weather";
@@ -14,15 +15,16 @@ describe('WeatherService', () => {
         temperature_degrees: -1
     }
     const city: string = 'Test';
+    const log = new Logger('test', 60)
     beforeAll(() => {
         pmock = jest.spyOn(PrimaryService.prototype, 'getWeather');
         smock = jest.spyOn(SecondaryService.prototype, 'getWeather');
         cmock = jest.spyOn(CacheService.prototype, 'getWeather');
     });
     beforeEach(() => {
-        let p: PrimaryService = new PrimaryService('http://primary.host', 'apiKey');
-        let s: SecondaryService = new SecondaryService('http://secondary.host', 'apiKey');
-        let c: CacheService = new CacheService(3000);
+        let p: PrimaryService = new PrimaryService('http://primary.host', 'apiKey', log);
+        let s: SecondaryService = new SecondaryService('http://secondary.host', 'apiKey', log);
+        let c: CacheService = new CacheService(3000, log);
         w = new WeatherService(p, s , c);
         jest.clearAllMocks();
     });

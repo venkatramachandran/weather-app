@@ -3,5 +3,6 @@ module.exports = {
   testEnvironment: 'node',
   verbose: true,
   coverageDirectory: 'output/coverage/jest',
-  collectCoverage: true
+  collectCoverage: true,
+  testMatch: ['**/*.test.ts']
 };

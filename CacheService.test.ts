@@ -1,4 +1,5 @@
 import CacheService from "./CacheService";
+import Logger from "./Logger";
 import Weather from './Weather';
 
 describe('CacheService', () => {
@@ -11,7 +12,7 @@ describe('CacheService', () => {
     const cacheTime = 3000;
 
     beforeEach(() => {
-        c = new CacheService(cacheTime);
+        c = new CacheService(cacheTime, new Logger('test', 60));
     });
     it('can get and set data properly', async () => {
         c.setWeather(city, w);
