@@ -25,7 +25,7 @@ describe('WeatherService', () => {
         let p: PrimaryService = new PrimaryService('http://primary.host', 'apiKey', log);
         let s: SecondaryService = new SecondaryService('http://secondary.host', 'apiKey', log);
         let c: CacheService = new CacheService(3000, log);
-        w = new WeatherService(p, s , c);
+        w = new WeatherService(p, s, c, log);
         jest.clearAllMocks();
     });
     it('calls primary service and returns data when primary service responds', async () => {

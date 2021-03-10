@@ -7,7 +7,7 @@ import Logger from "./Logger";
 
 @injectable()
 export default class SecondaryService {
-    constructor(@inject("secondary_api_url") private url: string, @inject("secondary_api_url") private apiKey: string, private log: Logger) {}
+    constructor(@inject("secondary_api_url") private url: string, @inject("secondary_api_key") private apiKey: string, private log: Logger) {}
 
     public async getWeather(city: string): Promise<Weather> {
         const apiUrl = `${this.url}?appid=${this.apiKey}&q=${city}&units=metric`;
