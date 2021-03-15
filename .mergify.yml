@@ -2,7 +2,9 @@ pull_request_rules:
   - name: Automatic merge on approval
     conditions:
       - author=dependabot[bot]
-      - status-success=build-and-test
+      - status-success=build-and-test (10)
+      - status-success=build-and-test (12)
+      - status-success=build-and-test (14)
     actions:
       merge:
         method: squash
