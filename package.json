@@ -36,6 +36,6 @@
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
     "reflect-metadata": "^0.1.13",
-    "tsyringe": "^4.5.0"
+    "tsyringe": "^4.6.0"
   }
 }
